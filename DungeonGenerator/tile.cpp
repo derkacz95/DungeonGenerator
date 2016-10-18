@@ -11,6 +11,8 @@ Tile::Tile(int width, int height, int posX, int posY)
 
     this->setRect(posX,posY,width, height);
     this->SetWalkable(false);
+    m_isEndPoint = false;
+    m_isStartPoint = false;
 }
 
 void Tile::SetWalkable(bool value)
@@ -28,14 +30,22 @@ void Tile::SetWalkable(bool value)
 
 void Tile::SetStartPoint(bool value)
 {
-    m_isStartPoint = true;
+    m_isStartPoint = value;
     m_isEndPoint = false;
-    this->SetWalkable(true);
+    if(value)
+    {
+        this->SetWalkable(true);
+        this->setBrush(QBrush(QColor(50,50,50)));
+    }
 }
 
 void Tile::SetEndPoint(bool value)
 {
-    m_isEndPoint = true;
+    m_isEndPoint = value;
     m_isStartPoint = false;
-    this->SetWalkable(true);
+    if(value)
+    {
+        this->SetWalkable(true);
+        this->setBrush(QBrush(QColor(50,50,50)));
+    }
 }

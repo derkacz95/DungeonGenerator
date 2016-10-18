@@ -60,10 +60,84 @@ void DungeonGenerator::GenerateDungeon()
 
     // Set the start point
     srand(time(0));
-    m_field[countY - 1][rand() % countX]->SetStartPoint(true);
+    int currX = rand() % countX;
+    int currY = countY - 1;
+    m_field[currY][currX]->SetStartPoint(true);
 
     // Set the end point
     srand(time(0));
-    m_field[0][rand() % countY]->SetEndPoint(true);
+    int test = rand() % countY;
+    qDebug() << test;
+    m_field[0][test]->SetEndPoint(true);
+
+    bool foundEnd = false;
+    int nextTile;
+    int i = 0;
+    srand(time(0));
+    while(!foundEnd)
+    {
+
+        nextTile = rand() % 3;
+        qDebug() << "nextTile" << nextTile;
+
+        if(nextTile == 0)
+        {
+            // forward
+            if(currY >= 1)
+            {
+                if(m_field[currY - 1][currX]->IsEndPoint())
+                {
+                    qDebug() << "curry" << currY << "currx" << currX;
+                    foundEnd = true;
+                    qDebug() << "found forward";
+                    break;
+                }
+                else
+                    m_field[--currY][currX]->SetWalkable(true);
+            }
+            else
+                continue;
+        }
+        else if(nextTile == 1)
+        {
+            // left
+            if(currX >= 1 && (currY < countY - 1 && currY > 0))
+            {
+                if(m_field[currY][currX - 1]->IsEndPoint())
+                {
+                    qDebug() << "curry" << currY << "currx" << currX;
+                    foundEnd = true;
+                    qDebug() << "found left";
+                    break;
+                }
+                else
+                    m_field[currY][--currX]->SetWalkable(true);
+            }
+            else
+                continue;
+        }
+        else if(nextTile == 2)
+        {
+            // right
+            if(currX <= countX - 1 && (currY < countY - 1 && currY > 0))
+            {
+                qDebug() << "curry" << currY << "currx" << currX;
+                if(m_field[currY][currX + 1]->IsEndPoint())
+                {
+                    foundEnd = true;
+                    qDebug() << "found right";
+                    break;
+                }
+                else
+                    m_field[currY][++currX]->SetWalkable(true);
+            }
+            else
+                continue;
+
+        }
+        /*i++;
+        if(i >= 10)
+            foundEnd = true;*/
+    }
 
 }
