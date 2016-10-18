@@ -5,6 +5,8 @@
 #include <QGraphicsView>
 #include <vector>
 #include "tile.h"
+#include <stdlib.h>
+#include <ctime>
 
 class DungeonGenerator
 {
@@ -22,6 +24,8 @@ private:
     int m_windowWidth;
     int m_windowHeight;
     int m_tileSize;
+    std::vector<int> m_startPoint;
+    std::vector<int> m_endPoint;
     std::vector<std::vector<Tile*>> m_field;
 
     QGraphicsView* m_window;

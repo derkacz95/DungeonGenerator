@@ -41,7 +41,7 @@ void DungeonGenerator::GenerateDungeon()
         m_scene->addItem(tile);
     }*/
 
-    // Generate the field
+    // Generate the grid with non walkable tiles
     int countX = m_windowWidth / m_tileSize;
     int countY = m_windowHeight / m_tileSize;
 
@@ -57,4 +57,13 @@ void DungeonGenerator::GenerateDungeon()
             m_scene->addItem(tile);
         }
     }
+
+    // Set the start point
+    srand(time(0));
+    m_field[countY - 1][rand() % countX]->SetStartPoint(true);
+
+    // Set the end point
+    srand(time(0));
+    m_field[0][rand() % countY]->SetEndPoint(true);
+
 }

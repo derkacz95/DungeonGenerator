@@ -228,6 +228,8 @@ debug/main.o: ../DungeonGenerator/main.cpp ../DungeonGenerator/dungeongenerator.
 		../DungeonGenerator/tile.h \
 		D:/Qt/5.7/mingw53_32/include/QtWidgets/QGraphicsRectItem \
 		D:/Qt/5.7/mingw53_32/include/QtWidgets/qgraphicsitem.h \
+		D:/Qt/5.7/mingw53_32/include/QtGui/QBrush \
+		D:/Qt/5.7/mingw53_32/include/QtCore/QDebug \
 		D:/Qt/5.7/mingw53_32/include/QtWidgets/QApplication \
 		D:/Qt/5.7/mingw53_32/include/QtWidgets/qapplication.h \
 		D:/Qt/5.7/mingw53_32/include/QtCore/qcoreapplication.h \
@@ -346,7 +348,9 @@ debug/dungeongenerator.o: ../DungeonGenerator/dungeongenerator.cpp ../DungeonGen
 		D:/Qt/5.7/mingw53_32/include/QtGui/qtouchdevice.h \
 		../DungeonGenerator/tile.h \
 		D:/Qt/5.7/mingw53_32/include/QtWidgets/QGraphicsRectItem \
-		D:/Qt/5.7/mingw53_32/include/QtWidgets/qgraphicsitem.h
+		D:/Qt/5.7/mingw53_32/include/QtWidgets/qgraphicsitem.h \
+		D:/Qt/5.7/mingw53_32/include/QtGui/QBrush \
+		D:/Qt/5.7/mingw53_32/include/QtCore/QDebug
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\dungeongenerator.o ..\DungeonGenerator\dungeongenerator.cpp
 
 debug/tile.o: ../DungeonGenerator/tile.cpp ../DungeonGenerator/tile.h \
@@ -431,7 +435,10 @@ debug/tile.o: ../DungeonGenerator/tile.cpp ../DungeonGenerator/tile.h \
 		D:/Qt/5.7/mingw53_32/include/QtGui/qrgba64.h \
 		D:/Qt/5.7/mingw53_32/include/QtGui/qimage.h \
 		D:/Qt/5.7/mingw53_32/include/QtGui/qpixelformat.h \
-		D:/Qt/5.7/mingw53_32/include/QtGui/qtransform.h
+		D:/Qt/5.7/mingw53_32/include/QtGui/qtransform.h \
+		D:/Qt/5.7/mingw53_32/include/QtGui/QBrush \
+		D:/Qt/5.7/mingw53_32/include/QtGui/qbrush.h \
+		D:/Qt/5.7/mingw53_32/include/QtCore/QDebug
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\tile.o ..\DungeonGenerator\tile.cpp
 
 ####### Install
