@@ -135,9 +135,9 @@ void DungeonGenerator::GenerateDungeon()
                 continue;
 
         }
-        /*i++;
+        i++;
         if(i >= 10)
-            foundEnd = true;*/
+            foundEnd = true;
     }
 
 }
