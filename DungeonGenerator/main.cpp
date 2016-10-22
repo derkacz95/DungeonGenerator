@@ -8,7 +8,7 @@ int main(int argc, char *argv[])
 
     DungeonGenerator* g = new DungeonGenerator(800,600);
     g->Start();
-
+ // sdklfasöldfj
     return a.exec();
 }
 
