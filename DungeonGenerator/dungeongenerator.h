@@ -37,6 +37,7 @@ private:
     int m_windowHeight;
     int m_tileSize;
     bool m_generateDungeon;
+    int recursiveCounter;
     std::vector<int> m_startPoint;
     std::vector<int> m_endPoint;
     std::vector<std::vector<Tile*>> m_field;
