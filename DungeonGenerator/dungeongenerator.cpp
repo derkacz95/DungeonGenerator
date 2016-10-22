@@ -53,7 +53,7 @@ void DungeonGenerator::GenerateDungeon()
     srand(time(0));
     m_field[0][rand() % countY]->SetEndPoint(true);
 
-    DrawPath(currX, currY, countY);
+    DrawPath(currX, currY, 1000);
 
     /*bool foundEnd = false;
     int nextTile;
@@ -143,13 +143,48 @@ void DungeonGenerator::GenerateDungeon()
 void DungeonGenerator::DrawPath(int startX, int startY, int tries)
 {
     srand(time(0));
+    int attachedX;
+
+    for(int y = startY - 1; y > 0; y--)
+    {
+        qDebug() << y;
+        for(int x = 1; x < m_field[0].size() - 1; x++)
+        {
+            if(attachedX > x + 1)
+                attachedX = -1;
+
+            if(m_field[y - 1][x]->IsEndPoint())
+            {
+                qDebug() << "EndPoint";
+                m_field[y][x]->SetWalkable(true);
+                break;
+            }
+
+            if(m_field[y + 1][x]->IsWalkable() && (!m_field[y+1][x-1]->IsWalkable() || !m_field[y][x-1]->IsWalkable()))
+            {
+               m_field[y][x]->SetWalkable(true);
+
+
+            }
+            else if(rand() % 5 == 0)
+            {
+                qDebug() << "Random";
+                m_field[y][x]->SetWalkable(true);
+
+            }
+
+        }
+    }
+
+    /*srand(time(0));
     int x = startX;
     int y = startY;
     int countX = m_field[0].size();
     int countY = m_field.size();
+    int lastAction;
     recursiveCounter++;
 
-    while(m_generateDungeon && tries > 0 && recursiveCounter <= 3)
+    while(m_generateDungeon && tries > 0 && recursiveCounter <= 15)
     {
         --tries;
         qDebug() << "tries: " << tries;
@@ -164,10 +199,10 @@ void DungeonGenerator::DrawPath(int startX, int startY, int tries)
             continue;
         }
 
-        int nextAction = rand() % 4;
+        int nextAction = rand() % 5;
         qDebug() << "nextAction: " << nextAction;
 
-        if(nextAction == Direction::Forward)
+        if(nextAction == Direction::Forward && nextAction != lastAction)
         {
             if(y - 1 >= 1 &&
                !m_field[y - 1][x]->IsWalkable() && !m_field[y - 1][x + 1]->IsWalkable() &&
@@ -178,35 +213,41 @@ void DungeonGenerator::DrawPath(int startX, int startY, int tries)
             }
 
         }
-        else if(nextAction == Direction::Left)
+        else if(nextAction == Direction::Left && nextAction != lastAction)
         {
             if(x - 1 >= 1 && y + 1 <= m_field.size() - 2 && y - 1 >= 1 &&
                !m_field[y][x - 1]->IsWalkable() && !m_field[y - 1][x - 1]->IsWalkable() &&
                !m_field[y + 1][x - 1]->IsWalkable())
             {
-                 m_field[y][x - 1]->SetWalkable(true);
-                 DrawPath(x + 1, y, 40);
+                 m_field[y][--x]->SetWalkable(true);
+                 //DrawPath(x + 1, y, 40);
             }
 
         }
-        else if(nextAction == Direction::Right)
+        else if(nextAction == Direction::Right && nextAction != lastAction)
         {
             if(x + 1 <= m_field[0].size() && y + 1 <= m_field.size() - 2 && y - 1 >= 1 &&
                !m_field[y][x + 1]->IsWalkable() && !m_field[y - 1][x + 1]->IsWalkable() &&
                !m_field[y + 1][x + 1]->IsWalkable())
             {
-                 m_field[y][x + 1]->SetWalkable(true);
-                 DrawPath(x + 1, y, 40);
+                 m_field[y][++x]->SetWalkable(true);
+                 //DrawPath(x + 1, y, 40);
             }
 
         }
-        else if(nextAction == Direction::Backwards)
+        else if(nextAction == Direction::Backwards && nextAction != lastAction)
         {
 
         }
+        else if(nextAction == 4 && nextAction != lastAction)
+        {
+            DrawPath(x, y, 10);
+        }
+
+        lastAction = nextAction;
 
 
     }
 
-    recursiveCounter--;
+    recursiveCounter--;*/
 }

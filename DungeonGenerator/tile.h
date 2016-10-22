@@ -18,6 +18,8 @@ public:
     bool IsEndPoint() {return m_isEndPoint; }
     bool IsStartPoint() {return m_isStartPoint;}
     bool IsWalkable() {return m_isWalkable; }
+    bool LockTile(bool value) { m_locked = value; }
+    bool IsLocked() {return m_locked;}
 
 
 private:
@@ -25,6 +27,7 @@ private:
     bool m_isWalkable;
     bool m_isStartPoint;
     bool m_isEndPoint;
+    bool m_locked;
 
 };
 
