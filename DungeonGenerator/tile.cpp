@@ -17,7 +17,7 @@ Tile::Tile(int width, int height, int posX, int posY)
 
 void Tile::SetWalkable(bool value)
 {
-
+    m_isWalkable = value;
     if(value)
     {
         this->setBrush(QBrush(QColor(255,0,0)));

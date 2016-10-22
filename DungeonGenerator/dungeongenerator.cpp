@@ -21,26 +21,11 @@ DungeonGenerator::DungeonGenerator(int windowWidth, int windowHeight)
 
 void DungeonGenerator::Start()
 {
-    GenerateDungeon();
+    StartGenerateDungeon();
 }
 
 void DungeonGenerator::GenerateDungeon()
 {
-    // Create non walkable tiles
-    /*for(int i = 0; i < 20; ++i)
-    {
-        Tile* tile = new Tile(m_tileSize,m_tileSize, i * m_tileSize, m_tileSize);
-        tile->setBrush(QBrush(QColor(0,0,255)));
-        m_scene->addItem(tile);
-    }
-
-    for(int i = 0; i < 30; ++i)
-    {
-        WalkableTile* tile = new WalkableTile(m_tileSize, m_tileSize, i * m_tileSize, i * m_tileSize);
-        tile->setBrush(QBrush(QColor(255,0,0)));
-        m_scene->addItem(tile);
-    }*/
-
     // Generate the grid with non walkable tiles
     int countX = m_windowWidth / m_tileSize;
     int countY = m_windowHeight / m_tileSize;
@@ -66,78 +51,159 @@ void DungeonGenerator::GenerateDungeon()
 
     // Set the end point
     srand(time(0));
-    int test = rand() % countY;
-    qDebug() << test;
-    m_field[0][test]->SetEndPoint(true);
+    m_field[0][rand() % countY]->SetEndPoint(true);
 
-    bool foundEnd = false;
+    DrawPath(currX, currY, countY);
+
+    /*bool foundEnd = false;
     int nextTile;
     int i = 0;
     srand(time(0));
-    while(!foundEnd)
+
+    /*while(!foundEnd)
     {
 
         nextTile = rand() % 3;
-        qDebug() << "nextTile" << nextTile;
 
-        if(nextTile == 0)
+        if(nextTile == Direction::Forward)
         {
-            // forward
-            if(currY >= 1)
+            if(currY - 1 >= 1 && !m_field[currY - 1][currX - 1]->IsWalkable()
+               && !m_field[currY - 1][currX + 1]->IsWalkable() && !m_field[currY-1][currX]->IsWalkable())
             {
                 if(m_field[currY - 1][currX]->IsEndPoint())
                 {
-                    qDebug() << "curry" << currY << "currx" << currX;
                     foundEnd = true;
-                    qDebug() << "found forward";
                     break;
                 }
                 else
+                {
                     m_field[--currY][currX]->SetWalkable(true);
+                }
             }
             else
+            {
+                currY++;
                 continue;
+            }
+
         }
-        else if(nextTile == 1)
+        else if(nextTile == Direction::Left)
         {
-            // left
-            if(currX >= 1 && (currY < countY - 1 && currY > 0))
+            if(currX - 1 >= 1 && (currY < countY - 1 && currY > 0) &&
+               !m_field[currY + 1][currX - 1]->IsWalkable() && !m_field[currY - 1][currX - 1]->IsWalkable() && !m_field[currY][currX-1]->IsWalkable())
             {
                 if(m_field[currY][currX - 1]->IsEndPoint())
                 {
-                    qDebug() << "curry" << currY << "currx" << currX;
                     foundEnd = true;
-                    qDebug() << "found left";
                     break;
                 }
                 else
+                {
                     m_field[currY][--currX]->SetWalkable(true);
+                }
             }
             else
-                continue;
-        }
-        else if(nextTile == 2)
-        {
-            // right
-            if(currX <= countX - 1 && (currY < countY - 1 && currY > 0))
             {
-                qDebug() << "curry" << currY << "currx" << currX;
+                currX++;
+                continue;
+            }
+        }
+        else if(nextTile == Direction::Right)
+        {
+            if(currX + 1 <= countY - 2 && (currY < countY - 1 && currY > 0) &&
+               !m_field[currY + 1][currX + 1]->IsWalkable() && !m_field[currY - 1][currX + 1]->IsWalkable() && !m_field[currY][currX+1]->IsWalkable())
+            {
                 if(m_field[currY][currX + 1]->IsEndPoint())
                 {
                     foundEnd = true;
-                    qDebug() << "found right";
                     break;
                 }
                 else
+                {
                     m_field[currY][++currX]->SetWalkable(true);
+                }
             }
             else
+            {
+                currX--;
                 continue;
+            }
+        }
+
+        i++;
+        if(i >= 60)
+            foundEnd = true;
+
+    }*/
+
+
+
+}
+
+void DungeonGenerator::DrawPath(int startX, int startY, int tries)
+{
+    srand(time(0));
+    int x = startX;
+    int y = startY;
+    int countX = m_field[0].size();
+    int countY = m_field.size();
+
+    while(m_generateDungeon && tries > 0)
+    {
+        --tries;
+        qDebug() << "tries: " << tries;
+
+        if(m_field[y - 1 < 0 ? y : y - 1][x]->IsEndPoint() ||
+           m_field[y + 1 >= countY ? y : y + 1][x]->IsEndPoint() ||
+           m_field[y][x - 1 < 0 ? x : x - 1]->IsEndPoint() ||
+           m_field[y][x + 1 >= countX ? x : x + 1 ]->IsEndPoint())
+        {
+            qDebug() << "Stop generating";
+            StopGenerateDungeon();
+            continue;
+        }
+
+        int nextAction = rand() % 4;
+        qDebug() << "nextAction: " << nextAction;
+
+        if(nextAction == Direction::Forward)
+        {
+            if(y + 1 >= 1 &&
+               !m_field[y - 1][x]->IsWalkable() && !m_field[y - 1][x + 1]->IsWalkable() &&
+               !m_field[y - 1][x - 1]->IsWalkable())
+            {
+                m_field[--y][x]->SetWalkable(true);
+
+            }
 
         }
-        i++;
-        if(i >= 10)
-            foundEnd = true;
-    }
+        else if(nextAction == Direction::Left)
+        {
+            if(x - 1 >= 1 && y + 1 <= m_field.size() - 2 && y - 1 >= 1 &&
+               !m_field[y][x - 1]->IsWalkable() && !m_field[y - 1][x - 1]->IsWalkable() &&
+               !m_field[y + 1][x - 1]->IsWalkable())
+            {
+                 m_field[y][x - 1]->SetWalkable(true);
+                 DrawPath(x + 1, y, 10);
+            }
 
+        }
+        else if(nextAction == Direction::Right)
+        {
+            if(x + 1 <= m_field[0].size() && y + 1 <= m_field.size() - 2 && y - 1 >= 1 &&
+               !m_field[y][x + 1]->IsWalkable() && !m_field[y - 1][x + 1]->IsWalkable() &&
+               !m_field[y + 1][x + 1]->IsWalkable())
+            {
+                 m_field[y][x + 1]->SetWalkable(true);
+                 DrawPath(x + 1, y, 10);
+            }
+
+        }
+        else if(nextAction == Direction::Backwards)
+        {
+
+        }
+
+
+    }
 }
